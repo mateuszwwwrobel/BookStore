@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <center>
+        <form action="{% url 'find-book' %}" class="form-label" method="get">
+            <label class="py-3" for="title">Title:</label>
+            <input type="text" id="title" name="title">
+            <br>
+            <label class="py-3" for="author">Author:</label>
+            <input type="text" id="author" name="author">
+            <br>
+            <label class="py-3" for="language">Language:</label>
+            <input type="text" id="language" name="language">
+            <br>
+            <label class="py-3" for="from_date">From date:</label>
+            <input type="date" id="from_date" name="from_date">
+            <br>
+            <label class="py-5" for="to_date">To date:</label>
+            <input type="date" id="to_date" name="to_date">
+            <br>
+            <button class="btn btn-lg btn-info" type="submit">Show Books</button>
+        </form>
+    </center>
+    <hr>
+        <table class="text-white table table-sm" id="myTable">
+            <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date of publication</th>
+                <th>ISBN</th>
+                <th>Pages</th>
+                <th>Cover url</th>
+                <th>Language</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in page_obj %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.pub_date }}</td>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.pages }}</td>
+                <td><a href="{{ book.cover_url }}">Link to cover</a></td>
+                <td>{{ book.language }}</td>
+            </tr>
+            {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}
