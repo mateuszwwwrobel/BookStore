@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <center>
+        <form action="{% url 'import-book' %}" class="form-label" method="get">
+            <label class="py-3" for="search_phrase">Search Phrase:</label>
+            <input type="text" id="search_phrase" name="search_phrase">
+            <br>
+            <button class="btn btn-lg btn-info" type="submit">Search in API</button>
+        </form>
+    </center>
+
+    <div>
+        {% if books %}
+        <table class="text-white table table-sm" id="myTable">
+            <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date of publication</th>
+                <th>ISBN</th>
+                <th>Pages</th>
+                <th>Cover url</th>
+                <th>Language</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.pub_date }}</td>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.pages }}</td>
+                <td><a href="{{ book.cover_url }}">Link to cover</a></td>
+                <td>{{ book.language }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="text-center">
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+            <p class="text-danger bg-warning">{ form.error }</p>
+            {% endif %}
+            {% for field in form %}
+            <p class="font-poppins font-poppins-navbar">
+                {{ field.label_tag }}
+                <br>
+                <span class="form-label">{{ field }}</span>
+            </p>
+            {% endfor %}
+            <hr>
+            <button class="btn btn-lg btn-info" type="submit">Add Book</button>
+        </form>
+    </div>
+</div>
+
+
+{% endblock content %}
