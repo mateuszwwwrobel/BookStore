@@ -3,7 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.shortcuts import render
-from django.views.generic import TemplateView, View
+from django.urls import reverse
+from django.views.generic import TemplateView, View, UpdateView
 from django.contrib import messages
 from rest_framework import viewsets
 
@@ -14,6 +15,16 @@ from core.serializers import BookSerializer, AuthorSerializer
 
 class HomeView(TemplateView):
     template_name = 'index.html'
+
+
+class BookUpdateView(UpdateView):
+    model = Book
+    fields = ['title', 'author', 'isbn', 'pages', 'cover_url', 'language', 'pub_date']
+    template_name = 'update_book.html'
+
+    def get_success_url(self):
+        messages.info(self.request, 'Book updated successfully.')
+        return reverse('update-book', kwargs={'pk': self.object.id})
 
 
 class FindBookView(View):

@@ -34,6 +34,8 @@
                 <th>Pages</th>
                 <th>Cover url</th>
                 <th>Language</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -50,6 +52,11 @@
                     <button onclick="DeleteBook({{ book.id }})" class="btn btn-sm btn-danger">
                         <i class="far fa-trash-alt fa-lg"></i>
                     </button>
+                </td>
+                <td>
+                    <a href="{% url 'update-book' pk=book.id %}">
+                        <button class="btn btn-sm btn-info">Edit Book</button>
+                    </a>
                 </td>
             </tr>
             {% endfor %}

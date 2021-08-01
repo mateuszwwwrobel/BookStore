@@ -16,7 +16,7 @@ urlpatterns = [
     path('add-book', views.AddBookView.as_view(), name='add-book'),
     path('find-book', views.FindBookView.as_view(), name='find-book'),
     path('import-book', views.ImportBookView.as_view(), name='import-book'),
+    path('update-book/<int:pk>', views.BookUpdateView.as_view(), name='update-book'),
 
     path('api/', include(router.urls)),
-
 ]
