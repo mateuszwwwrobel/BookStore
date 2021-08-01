@@ -17,7 +17,7 @@ class HomeView(TemplateView):
 
 
 class FindBookView(View):
-
+    """Allows users to search for books by given parameters."""
     def get(self, request):
         title = request.GET.get('title')
         author = request.GET.get('author')
@@ -53,7 +53,7 @@ class FindBookView(View):
             messages.info(request, 'Please find list of all books down below.')
             queryset = Book.objects.all()
 
-        paginator = Paginator(queryset, 15)
+        paginator = Paginator(queryset, 10)
         page_number = request.GET.get('page', 1)
         page_obj = paginator.get_page(page_number)
 
@@ -70,7 +70,7 @@ class FindBookView(View):
 
 
 class AddBookView(View):
-
+    """Allows users to add new books to database via the form."""
     def get(self, request):
         authors = Author.objects.all()
         form = AddBookForm(data_list=authors)
@@ -114,9 +114,8 @@ class AddBookView(View):
 
 
 class ImportBookView(View):
-
+    """Allows users to add books through the Google Books APIs."""
     def get(self, request):
-
         search_phrase = request.GET.get('search_phrase')
 
         if search_phrase:
@@ -125,7 +124,11 @@ class ImportBookView(View):
 
             books_instances = []
             if r.status_code == 200:
-                books = r.json()['items']
+                try:
+                    books = r.json()['items']
+                except KeyError:
+                    books = []
+                    messages.success(request, 'No books with the searched phrase.')
 
                 for book in books:
                     book_info = book['volumeInfo']
