@@ -51,7 +51,7 @@ class FindBookView(View):
             queryset = Book.objects.filter(**filter_dict)
         else:
             messages.info(request, 'Please find list of all books down below.')
-            queryset = Book.objects.all().order_by('title')
+            queryset = Book.objects.all()
 
         paginator = Paginator(queryset, 15)
         page_number = request.GET.get('page', 1)
