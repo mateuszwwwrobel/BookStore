@@ -1,13 +1,15 @@
 import requests
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
 from django.contrib import messages
+from rest_framework import viewsets
 
 from core.forms import AddBookForm
 from core.models import Author, Book
+from core.serializers import BookSerializer, AuthorSerializer
 
 
 class HomeView(TemplateView):
@@ -198,3 +200,14 @@ class ImportBookView(View):
             return render(request, 'api_book.html', context)
         else:
             return render(request, 'api_book.html')
+
+
+class AuthorViewSet(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+
+class BookViewSet(viewsets.ModelViewSet):
+
+    queryset = Book.objects.all().order_by('title')
+    serializer_class = BookSerializer
