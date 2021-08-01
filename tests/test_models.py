@@ -2,20 +2,11 @@ from django.test import TestCase
 from core.models import Author, Book
 
 
-class ModelsTestCase(TestCase):
+class AuthorModelTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls) -> None:
-        author = Author.objects.create(name="Tolkien")
-        Book.objects.create(
-            title='Hobbit',
-            author=author,
-            pub_date='2020-06-06',
-            isbn=1234567890000,
-            pages=133,
-            cover_url='http://ladny_url.com/okladka/',
-            language='pl',
-        )
+        Author.objects.create(name="Tolkien")
 
     # Author Model
     def test_name_label(self):
@@ -23,12 +14,12 @@ class ModelsTestCase(TestCase):
         field_label = author._meta.get_field('name').verbose_name
         self.assertEqual(field_label, 'name')
 
-    def test_created_at_label(self):
+    def test_author_created_at_label(self):
         author = Author.objects.get(id=1)
         field_label = author._meta.get_field('created_at').verbose_name
         self.assertEqual(field_label, 'created at')
 
-    def test_updated_at_label(self):
+    def test_author_updated_at_label(self):
         author = Author.objects.get(id=1)
         field_label = author._meta.get_field('updated_at').verbose_name
         self.assertEqual(field_label, 'updated at')
@@ -42,6 +33,22 @@ class ModelsTestCase(TestCase):
         author = Author.objects.get(id=1)
         expected_obj_name = f'{author.name}'
         self.assertEqual(str(author), expected_obj_name)
+
+
+class BookModelTestCase(TestCase):
+
+    @classmethod
+    def setUpTestData(cls) -> None:
+        author = Author.objects.create(name="Tolkien")
+        Book.objects.create(
+            title='Hobbit',
+            author=author,
+            pub_date='2020-06-06',
+            isbn=1234567890000,
+            pages=133,
+            cover_url='http://ladny_url.com/okladka/',
+            language='pl',
+        )
 
     # Book  Model
     def test_title_label(self):
@@ -108,7 +115,3 @@ class ModelsTestCase(TestCase):
         book = Book.objects.get(id=1)
         expected_obj_name = f'{book.title} - {book.author}'
         self.assertEqual(str(book), expected_obj_name)
-
-
-class FormsTestCase(TestCase):
-    pass
